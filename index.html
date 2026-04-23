@@ -9,6 +9,15 @@
   </head>
 
   <body>
+    <form>
+      <label for="episode-select">Select episode:</label>
+      <select id="episode-select">
+        <option value="">All Episodes</option>
+      </select>
+
+      <label for="filter-input">Find episodes:</label>
+      <input type="text" id="filter-input" placeholder="Type to search..." />
+    </form>
     <main id="root">
       <div id="loading-message" class="loading-message">
         <p>Loading episodes...</p>

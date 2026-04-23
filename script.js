@@ -15,28 +15,35 @@ function setup() {
   const filterInput = document.getElementById("filter-input");
   const episodeSelect = document.getElementById("episode-select");
 
-  //  Search input event listener
-  filterInput.addEventListener("input", (event) => {
-    const searchTerm = event.target.value.toLowerCase();
+  function applyFilters() {
+    const searchTerm = filterInput.value.toLowerCase();
+    const selectedId = episodeSelect.value;
+
     const filtered = allEpisodes.filter((ep) => {
-      return (
+      const matchesSearch =
         ep.name.toLowerCase().includes(searchTerm) ||
-        (ep.summary || "").toLowerCase().includes(searchTerm)
-      );
+        (ep.summary || "").toLowerCase().includes(searchTerm);
+
+      const matchesSelection = !selectedId || String(ep.id) === selectedId;
+      return matchesSearch && matchesSelection;
     });
+
     renderEpisodes(filtered);
+  }
+
+  //  Search input event listener
+  filterInput.addEventListener("input", () => {
+    if (filterInput.value.trim() === "") {
+      episodeSelect.value = "";
+      renderEpisodes(allEpisodes);
+      return;
+    }
+
+    applyFilters();
   });
 
   // Dropdown select event listener
-  episodeSelect.addEventListener("change", (event) => {
-    const selectedId = event.target.value;
-    if (!selectedId) {
-      renderEpisodes(allEpisodes);
-    } else {
-      const filtered = allEpisodes.filter((ep) => ep.id == selectedId);
-      renderEpisodes(filtered);
-    }
-  });
+  episodeSelect.addEventListener("change", applyFilters);
 }
 
 // New function to fill the <select> dropdown

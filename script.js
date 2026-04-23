@@ -44,6 +44,16 @@ function createEpisodeCode(season, number) {
   return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
 
+function stripHtml(html) {
+  const temp = document.createElement("div");
+  temp.innerHTML = html || "";
+  return temp.textContent || temp.innerText || "";
+}
+
+function createSearchText(episode) {
+  return `${episode.name} ${stripHtml(episode.summary || "")}`.toLowerCase();
+}
+
 function createEpisodeCard(episode) {
   const template = document.getElementById("episode-card-template");
   const card = template.content.firstElementChild.cloneNode(true);
@@ -53,15 +63,21 @@ function createEpisodeCard(episode) {
 
   card.querySelector(".episode-code").textContent = episodeCode;
   card.querySelector(".episode-numbers").textContent =
-    `Season ${episode.season} • Episode ${episode.number}`;
+    `Season ${episode.season} - Episode ${episode.number}`;
 
   const imageElem = card.querySelector(".episode-image-img");
-  imageElem.src = imageSrc;
-  imageElem.alt = episode.name;
+  const imageContainer = card.querySelector(".episode-image");
+  if (imageSrc) {
+    imageElem.src = imageSrc;
+    imageElem.alt = episode.name;
+  } else {
+    imageContainer.classList.add("hidden");
+  }
 
   card.querySelector(".episode-title").textContent = episode.name;
-  card.querySelector(".episode-summary").innerHTML =
-    episode.summary || "<p>No summary available.</p>";
+  const summaryText = stripHtml(episode.summary || "");
+  card.querySelector(".episode-summary").textContent =
+    summaryText || "No summary available.";
   card.querySelector(".episode-url").href = episode.url;
 
   return card;
@@ -104,14 +120,17 @@ function setup() {
       clearError();
       populateSelect(allEpisodes);
 
+      const searchableEpisodes = allEpisodes.map((episode) => ({
+        ...episode,
+        _searchText: createSearchText(episode),
+      }));
+
       function applyFilters() {
         const searchTerm = filterInput.value.toLowerCase();
         const selectedId = episodeSelect.value;
 
-        const filtered = allEpisodes.filter((episode) => {
-          const matchesSearch =
-            episode.name.toLowerCase().includes(searchTerm) ||
-            (episode.summary || "").toLowerCase().includes(searchTerm);
+        const filtered = searchableEpisodes.filter((episode) => {
+          const matchesSearch = episode._searchText.includes(searchTerm);
           const matchesSelection =
             !selectedId || String(episode.id) === selectedId;
           return matchesSearch && matchesSelection;

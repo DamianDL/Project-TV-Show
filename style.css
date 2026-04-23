@@ -37,36 +37,18 @@ body {
 
 .controls label {
   font-weight: 700;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .controls select,
 .controls input {
   min-width: 250px;
+  width: 30%;
   padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
-}
-
-input,
-select {
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-  width: 30%;
-  padding: 2px;
   box-sizing: border-box;
-}
-
-label {
-  font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
 }
 
 #root {
@@ -222,8 +204,8 @@ form {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  input,
-  select {
+  .controls input,
+  .controls select {
     width: 45%;
   }
 }
@@ -238,13 +220,8 @@ form {
     align-items: stretch;
   }
 
-  form {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  input,
-  select {
+  .controls input,
+  .controls select {
     width: 100%;
   }
 }

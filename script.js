@@ -246,6 +246,38 @@ function populateEpisodeSelect(episodes) {
 function applyEpisodeFilters() {
   const searchInput = document.getElementById("episode-search-input");
   const episodeSelect = document.getElementById("episode-select");
+  const filterInput = document.getElementById("filter-input");
+
+  let currentEpisodes = [];
+
+  // Helper to fetch and render episodes for a specific ID
+  function loadShowById(showId) {
+    if (!showId) return;
+
+    console.log(`Fetching episodes for show ID: ${showId}`);
+    document.getElementById("loading-message").classList.remove("hidden");
+
+    fetchEpisodesOnce(showId)
+      .then((episodes) => {
+        hideLoading();
+        clearError();
+
+        currentEpisodes = episodes.map((ep) => ({
+          ...ep,
+          _searchText:
+            `${ep.name} ${stripHtml(ep.summary || "")}`.toLowerCase(),
+        }));
+
+        populateEpisodeSelect(currentEpisodes);
+        filterInput.value = "";
+        renderEpisodes(currentEpisodes, currentEpisodes.length);
+        console.log("Episodes rendered successfully.");
+      })
+      .catch((err) => {
+        console.error("Error loading episodes:", err);
+        showError(err.message);
+      });
+  }
 
   const searchTerm = searchInput.value.trim().toLowerCase();
   const selectedEpisodeId = episodeSelect.value;
@@ -381,6 +413,12 @@ function setup() {
     .catch((error) => {
       showError(error.message);
     });
+
+    renderEpisodes(filtered, currentEpisodes.length);
+  }
+
+  filterInput.addEventListener("input", applyFilters);
+  episodeSelect.addEventListener("change", applyFilters);
 }
 
 window.onload = setup;

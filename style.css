@@ -11,6 +11,20 @@ body {
   padding-bottom: 120px;
 }
 
+input,
+select {
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 30%;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+label {
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 #root {
   color: #333;
   max-width: 1400px;

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TV Show Project | Damian Dunkley (DamianDL)</title>
     <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
@@ -35,6 +35,31 @@
         class="episodes-container"
         aria-live="polite"
       ></section>
+
+      <template id="episode-card-template">
+        <article class="episode-card">
+          <div class="episode-header">
+            <h2 class="episode-code"></h2>
+            <p class="episode-numbers"></p>
+          </div>
+          <div class="episode-image">
+            <img class="episode-image-img" src="" alt="" />
+          </div>
+          <div class="episode-name">
+            <h3 class="episode-title"></h3>
+          </div>
+          <div class="episode-summary"></div>
+          <div class="episode-link">
+            <a
+              class="episode-url"
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on TVMaze</a
+            >
+          </div>
+        </article>
+      </template>
     </main>
 
     <footer class="attribution">

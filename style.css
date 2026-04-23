@@ -27,6 +27,30 @@ body {
   padding-bottom: 120px;
 }
 
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.controls label {
+  font-weight: 700;
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.controls select,
+.controls input {
+  min-width: 250px;
+  width: 30%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
 #root {
   color: var(--color-dark);
   max-width: 1400px;
@@ -173,4 +197,31 @@ body {
 
 .hidden {
   display: none !important;
+}
+
+@media (max-width: 1000px) {
+  .episodes-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .controls input,
+  .controls select {
+    width: 45%;
+  }
+}
+
+@media (max-width: 700px) {
+  .episodes-container {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls input,
+  .controls select {
+    width: 100%;
+  }
 }

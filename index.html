@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,39 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <form>
+      <label for="episode-select">Select episode:</label>
+      <select id="episode-select">
+        <option value="">All Episodes</option>
+      </select>
+
+      <label for="filter-input">Find episodes:</label>
+      <input type="text" id="filter-input" placeholder="Type to search..." />
+    </form>
+    <main id="root">
+      <h1 id="episode-total">0 Episode(s)</h1>
+      <p id="episode-count">Displaying 0 episode(s)</p>
+      <section
+        id="episodes"
+        class="episodes-container"
+        aria-live="polite"
+      ></section>
+    </main>
+
+    <footer class="attribution">
+      <p>
+        Data sourced from
+        <a href="https://tvmaze.com/" target="_blank" rel="noopener noreferrer"
+          >TVMaze.com</a
+        >. See
+        <a
+          href="https://www.tvmaze.com/api#licensing"
+          target="_blank"
+          rel="noopener noreferrer"
+          >licensing</a
+        >.
+      </p>
+    </footer>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
@@ -17,6 +49,4 @@
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>
-  
-
 </html>

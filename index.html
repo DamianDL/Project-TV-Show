@@ -11,36 +11,50 @@
   <body>
     <main id="root">
       <div id="loading-message" class="loading-message">
-        <p>Loading episodes...</p>
+        <p>Loading data...</p>
       </div>
       <div id="error-message" class="error-message hidden"></div>
-      <form class="controls" aria-label="TV show and episode filters">
-        <label for="show-select">Select show:</label>
-        <select id="show-select">
-          <option value="">Loading shows...</option>
-        </select>
 
-        <label for="episode-select">Select episode:</label>
-        <select id="episode-select">
-          <option value="">All episodes</option>
-        </select>
-
-        <label for="filter-input">Find episodes:</label>
-        <input type="text" id="filter-input" placeholder="Type to search..." />
-      </form>
-      <section id="cache-debug" class="cache-debug" aria-live="polite">
-        <p><strong>Fetched URLs this visit</strong></p>
-        <ul id="cache-urls">
-          <li>None yet</li>
-        </ul>
+      <section id="shows-view" aria-live="polite">
+        <h1>TV Shows</h1>
+        <form class="controls" aria-label="Show search controls">
+          <label for="show-search-input">Find shows:</label>
+          <input
+            type="text"
+            id="show-search-input"
+            placeholder="Search by name, genre, or summary..."
+          />
+        </form>
+        <p id="show-count">Displaying 0/0 show(s)</p>
+        <section id="shows-list" class="shows-container"></section>
       </section>
-      <h1 id="episode-total">0 Episode(s)</h1>
-      <p id="episode-count">Displaying 0 episode(s)</p>
-      <section
-        id="episodes"
-        class="episodes-container"
-        aria-live="polite"
-      ></section>
+
+      <section id="episodes-view" class="hidden" aria-live="polite">
+        <nav class="episodes-nav">
+          <a href="#" id="back-to-shows">Back to shows listing</a>
+        </nav>
+        <h1 id="current-show-title">Episodes</h1>
+        <form class="controls" aria-label="Episode filters">
+          <label for="episode-select">Select episode:</label>
+          <select id="episode-select">
+            <option value="">All episodes</option>
+          </select>
+
+          <label for="episode-search-input">Find episodes:</label>
+          <input
+            type="text"
+            id="episode-search-input"
+            placeholder="Search episodes..."
+          />
+        </form>
+        <h2 id="episode-total">0 Episode(s)</h2>
+        <p id="episode-count">Displaying 0 episode(s)</p>
+        <section
+          id="episodes"
+          class="episodes-container"
+          aria-live="polite"
+        ></section>
+      </section>
     </main>
 
     <footer class="attribution">

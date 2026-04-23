@@ -2,7 +2,6 @@ const SHOWS_URL = "https://api.tvmaze.com/shows";
 const fetchCache = new Map();
 
 const state = {
-  allShows: [],
   selectedShowId: "",
   allEpisodes: [],
 };
@@ -30,32 +29,8 @@ function clearError() {
   errorElem.textContent = "";
 }
 
-function updateCacheDebug() {
-  const cacheList = document.getElementById("cache-urls");
-  if (!cacheList) {
-    return;
-  }
-
-  const cachedUrls = [...fetchCache.keys()];
-  if (cachedUrls.length === 0) {
-    const emptyItem = document.createElement("li");
-    emptyItem.textContent = "None yet";
-    cacheList.replaceChildren(emptyItem);
-    return;
-  }
-
-  const items = cachedUrls.map((url) => {
-    const item = document.createElement("li");
-    item.textContent = url;
-    return item;
-  });
-
-  cacheList.replaceChildren(...items);
-}
-
 function fetchJsonOnce(url) {
   if (fetchCache.has(url)) {
-    updateCacheDebug();
     return fetchCache.get(url);
   }
 
@@ -67,7 +42,6 @@ function fetchJsonOnce(url) {
   });
 
   fetchCache.set(url, requestPromise);
-  updateCacheDebug();
   return requestPromise;
 }
 
@@ -82,24 +56,59 @@ function createEpisodeCard(episode) {
   const episodeCode = createEpisodeCode(episode.season, episode.number);
   const imageSrc = episode.image ? episode.image.medium : "";
 
-  card.innerHTML = `
-    <div class="episode-header">
-      <h2>${episodeCode}</h2>
-      <p class="episode-numbers">Season ${episode.season} - Episode ${episode.number}</p>
-    </div>
-    <div class="episode-image">
-      <img src="${imageSrc}" alt="${episode.name}">
-    </div>
-    <div class="episode-name">
-      <h3>${episode.name}</h3>
-    </div>
-    <div class="episode-summary">
-      ${episode.summary || "<p>No summary available.</p>"}
-    </div>
-    <div class="episode-link">
-      <a href="${episode.url}" target="_blank" rel="noopener noreferrer">View on TVMaze</a>
-    </div>
-  `;
+  const header = document.createElement("div");
+  header.className = "episode-header";
+
+  const codeHeading = document.createElement("h2");
+  codeHeading.textContent = episodeCode;
+
+  const numbers = document.createElement("p");
+  numbers.className = "episode-numbers";
+  numbers.textContent = `Season ${episode.season} - Episode ${episode.number}`;
+
+  header.append(codeHeading, numbers);
+
+  const imageContainer = document.createElement("div");
+  imageContainer.className = "episode-image";
+
+  if (imageSrc) {
+    const image = document.createElement("img");
+    image.src = imageSrc;
+    image.alt = episode.name;
+    imageContainer.appendChild(image);
+  } else {
+    imageContainer.classList.add("hidden");
+  }
+
+  const nameContainer = document.createElement("div");
+  nameContainer.className = "episode-name";
+
+  const title = document.createElement("h3");
+  title.textContent = episode.name;
+  nameContainer.appendChild(title);
+
+  const summaryContainer = document.createElement("div");
+  summaryContainer.className = "episode-summary";
+  summaryContainer.textContent =
+    stripHtml(episode.summary || "") || "No summary available.";
+
+  const linkContainer = document.createElement("div");
+  linkContainer.className = "episode-link";
+
+  const link = document.createElement("a");
+  link.href = episode.url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View on TVMaze";
+  linkContainer.appendChild(link);
+
+  card.append(
+    header,
+    imageContainer,
+    nameContainer,
+    summaryContainer,
+    linkContainer,
+  );
 
   return card;
 }
@@ -204,7 +213,6 @@ function setupEventListeners() {
 
   showSelect.addEventListener("change", () => {
     state.selectedShowId = showSelect.value;
-    filterInput.value = "";
     loadEpisodesForShow(state.selectedShowId);
   });
 
@@ -215,7 +223,6 @@ function setupEventListeners() {
 function setup() {
   showLoading("Loading shows...");
   clearError();
-  updateCacheDebug();
   setupEventListeners();
 
   fetchJsonOnce(SHOWS_URL)
@@ -224,7 +231,6 @@ function setup() {
         throw new Error("No shows found");
       }
 
-      state.allShows = shows;
       populateShowSelect(shows);
       return loadEpisodesForShow(state.selectedShowId);
     })

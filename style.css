@@ -171,24 +171,6 @@ body {
   text-align: center;
 }
 
-.cache-debug {
-  background: white;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-md);
-  margin-bottom: var(--spacing-lg);
-}
-
-.cache-debug p {
-  margin-bottom: 8px;
-}
-
-.cache-debug ul {
-  margin-left: 20px;
-  color: var(--color-text);
-  word-break: break-all;
-}
-
 .hidden {
   display: none !important;
 }
